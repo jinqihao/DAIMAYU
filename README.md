@@ -1,5 +1,7 @@
 # 代码雨 (Code Rain)
 
+# AI父子实验
+
 一个使用HTML5 Canvas制作的彩虹代码雨效果。
 
 ## 特点
