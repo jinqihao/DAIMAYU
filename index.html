@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>彩虹代码雨</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: black;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="rainCanvas"></canvas>
+    <script>
+        // 获取画布和上下文
+        const canvas = document.getElementById('rainCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // 设置画布尺寸为全屏
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // 彩虹颜色数组
+        const colors = [
+            '#FF0000', // 红
+            '#FF7F00', // 橙
+            '#FFFF00', // 黄
+            '#00FF00', // 绿
+            '#0000FF', // 蓝
+            '#4B0082', // 靛
+            '#9400D3'  // 紫
+        ];
+
+        // 代码字符数组
+        const codeChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789{}[]()<>/*-+=';
+
+        // 雨滴类
+        class RainDrop {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = 0;
+                this.speed = 1 + Math.random() * 3;
+                this.colorIndex = Math.floor(Math.random() * colors.length);
+                this.size = 14 + Math.random() * 6;
+                this.text = codeChars[Math.floor(Math.random() * codeChars.length)];
+            }
+
+            update() {
+                this.y += this.speed;
+                if (this.y > canvas.height) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.fillStyle = colors[this.colorIndex];
+                ctx.font = `${this.size}px monospace`;
+                ctx.fillText(this.text, this.x, this.y);
+            }
+        }
+
+        // 创建雨滴数组
+        const raindrops = Array.from({ length: 100 }, () => new RainDrop());
+
+        // 动画循环
+        function animate() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            raindrops.forEach(drop => {
+                drop.update();
+                drop.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        // 开始动画
+        animate();
+    </script>
+</body>
+</html> 
