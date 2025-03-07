@@ -9,18 +9,68 @@
             margin: 0;
             overflow: hidden;
             background: black;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
         }
         canvas {
             display: block;
+            opacity: 0;
+            transition: opacity 2s ease;
+        }
+        #intro {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            z-index: 1000;
+            opacity: 0;
+            animation: introAnimation 4s ease-in-out forwards;
+        }
+        #intro h1 {
+            font-size: 4em;
+            margin: 0;
+            background: linear-gradient(45deg, #FF0000, #FF7F00, #FFFF00, #00FF00, #0000FF, #4B0082, #9400D3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        @keyframes introAnimation {
+            0% { opacity: 0; transform: scale(0.8); }
+            20% { opacity: 1; transform: scale(1); }
+            80% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(1.2); }
+        }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
     </style>
 </head>
 <body>
+    <div id="intro">
+        <h1>AI父子实验室</h1>
+    </div>
     <canvas id="rainCanvas"></canvas>
     <script>
         // 获取画布和上下文
         const canvas = document.getElementById('rainCanvas');
         const ctx = canvas.getContext('2d');
+        const intro = document.getElementById('intro');
+
+        // 在动画结束后显示代码雨
+        setTimeout(() => {
+            intro.style.display = 'none';
+            canvas.style.opacity = '1';
+            startRain();
+        }, 4000);
 
         // 设置画布尺寸为全屏
         function resizeCanvas() {
@@ -89,8 +139,10 @@
             requestAnimationFrame(animate);
         }
 
-        // 开始动画
-        animate();
+        // 开始代码雨动画
+        function startRain() {
+            animate();
+        }
     </script>
 </body>
 </html> 
